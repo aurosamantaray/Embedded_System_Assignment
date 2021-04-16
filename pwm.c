@@ -56,24 +56,24 @@ int main()
 void set_led(int duty_cycle){
   /* PWM is configured for 100Hz or 10000us*/
   int pwm_time_period = PWM_FREQUENCY(100);
-	int pwm_high_period = pwm_time_period * ((float)duty_cycle/100);
-	int pwm_low_period = pwm_time_period - pwm_high_period;
-	printf("Debug : %d---------%d\n",pwm_high_period,pwm_low_period);
+  int pwm_high_period = pwm_time_period * ((float)duty_cycle/100);
+  int pwm_low_period = pwm_time_period - pwm_high_period;
+  printf("Debug : %d---------%d\n",pwm_high_period,pwm_low_period);
   /* Call back function for timer_handler */
   signal(SIGALRM, &timer_handler);
   /* Set timeout to 1 second, this works as a software interrupt to update the value of time_elapsed variable so we can breakout of while loop*/
   alarm(1);
-	while(time_elapsed){
+  while(time_elapsed){
       if(pwm_high_period){
-        GPIO_SET = (1 << GPIO_2 );
-    		GPIO_CLR = (1 << GPIO_5);
-      	usleep(pwm_high_period);
-       }
+		GPIO_SET = (1 << GPIO_2 );
+		GPIO_CLR = (1 << GPIO_5);
+		usleep(pwm_high_period);
+      			}
       if(pwm_low_period){
     		GPIO_CLR = (1 << GPIO_2);
     		GPIO_SET = (1 << GPIO_5);
     		usleep(pwm_low_period);
-       }
+      			}
      }
      /* Reset the variable to 1 for the next function*/
     time_elapsed = 1;
@@ -103,7 +103,6 @@ void gpio_config()
    /* Set gpio pin 2 and 5 to output*/
     OUT_GPIO(GPIO_2);
     OUT_GPIO(GPIO_5);
-   
 }
 
 /* Timer to change the value of time_elapsed */
